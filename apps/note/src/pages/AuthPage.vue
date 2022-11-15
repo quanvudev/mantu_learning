@@ -1,42 +1,23 @@
 <template>
-  <div class="container">
-    <form class="form q-gutter-md" @submit.prevent.stop="onSubmit">
-      <q-input
-        ref="usernameRef"
-        v-model="form.username"
-        label="Username"
-        :rules="[
-          (v) => !!v || 'Username is required',
-          (v) => v.length >= 6 || 'Username minumun 6 characters',
-        ]"
-        :loading="auth.isAuthenticating"
-      />
-      <q-input
-        ref="passwordRef"
-        v-model="form.password"
-        label="Password"
-        :rules="[
-          (v) => !!v || 'Password is required',
-          (v) => v.length >= 6 || 'Password minumun 6 characters',
-        ]"
-        :type="visiblePassword ? 'text' : 'password'"
-        :loading="auth.isAuthenticating"
-      >
+  <q-page class="container">
+    <form class="form q-gutter-md" @submit.prevent.stop="onSubmit" autocomplete="off" autocorrect="off">
+      <q-input ref="usernameRef" v-model="form.username" label="Username" :rules="[
+        (v) => !!v || 'Username is required',
+        (v) => v.length >= 6 || 'Username minimum 6 characters',
+      ]" :loading="auth.isAuthenticating" />
+      <q-input ref="passwordRef" v-model="form.password" label="Password" :rules="[
+        (v) => !!v || 'Password is required',
+        (v) => v.length >= 6 || 'Password minimum 6 characters',
+      ]" :type="visiblePassword ? 'text' : 'password'" :loading="auth.isAuthenticating">
         <template #append>
-          <q-btn
-            :icon="visiblePassword ? 'visibility' : 'visibility_off'"
-            @click="visiblePassword = !visiblePassword"
-            round
-            flat
-          />
+          <q-btn :icon="visiblePassword ? 'visibility' : 'visibility_off'" @click="visiblePassword = !visiblePassword"
+            round flat />
         </template>
       </q-input>
 
-      <q-btn type="submit" color="primary" :loading="auth.isAuthenticating"
-        >Login</q-btn
-      >
+      <q-btn type="submit" color="primary" :loading="auth.isAuthenticating">Login</q-btn>
     </form>
-  </div>
+  </q-page>
 </template>
 
 <script lang="ts" setup>

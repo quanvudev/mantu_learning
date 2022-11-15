@@ -1,6 +1,7 @@
 import { AUTH } from '@/apis';
 import { KEYS } from '@/constants';
 import { defineStore } from 'pinia';
+import { useQuasar } from 'quasar';
 import { computed, reactive, toRefs } from 'vue';
 import { useQuery, useMutation } from 'vue-query';
 
@@ -16,6 +17,7 @@ interface State {
 const initialState = { isAuth: false, user: null };
 
 export const useAuthStore = defineStore('auth', () => {
+  const $q = useQuasar();
   const state = reactive<State>(initialState);
 
   const isAuthenticated = computed(() => state.isAuth && state.user);
@@ -31,7 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
       onSuccess: (d) => {
         state.user = d.data;
         state.isAuth = Boolean(d.data);
-      }
+      },
     }
   );
 
@@ -44,7 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
         state.isAuth = true;
         state.token = d.accessToken;
         state.user = d.data;
-      }
+      },
     }
   );
 
@@ -56,9 +58,19 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function logout() {
-    state.isAuth = false;
-    state.user = null;
-    state.token = undefined;
+    $q.dialog({
+      title: 'Alert',
+      message: 'Are you sure to logout?',
+      ok: {
+        color: 'primary',
+      },
+      cancel: true,
+    }).onOk(() => {
+      state.isAuth = false;
+      state.user = null;
+      state.token = undefined;
+      localStorage.clear();
+    });
   }
 
   function login(payload: API.LoginPayload) {
@@ -72,6 +84,6 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     bootstrap,
     logout,
-    login
+    login,
   };
 });

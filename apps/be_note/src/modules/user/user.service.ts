@@ -1,5 +1,4 @@
-import { Inject, Injectable, Scope } from '@nestjs/common';
-import { REQUEST } from '@nestjs/core';
+import { Injectable, Scope } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -12,9 +11,6 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    @InjectRepository(Auth)
-    @Inject(REQUEST)
-    private readonly request: Request,
   ) {}
   async create(createUserDto: CreateUserDto, auth: Auth) {
     await this.usersRepository.insert(

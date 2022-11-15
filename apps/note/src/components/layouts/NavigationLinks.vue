@@ -74,6 +74,7 @@ const navigate = (routeName: RouteNames) => {
 
     &.vertical {
       color: #c4c4c4;
+
       &.active {
         color: var(--q-primary);
       }

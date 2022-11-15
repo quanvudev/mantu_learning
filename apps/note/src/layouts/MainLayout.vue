@@ -2,27 +2,43 @@
   <q-layout view="hHh Lpr lff">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
+        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
         <NavigationLinks :links="linkWithAuth" />
+        <q-btn-dropdown v-if="auth.isAuth && auth.user" flat class="user-dropdown">
+          <template #label>
+            <q-avatar>
+              {{ auth.user.name[0] }}
+            </q-avatar>
+            {{ auth.user.name }}
+          </template>
+          <q-list>
+            <q-item clickable v-ripple>
+              <q-item-section avatar>
+                <q-avatar color="secondary">
+                  {{ auth.user.name[0] }}
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                {{ auth.user?.name }}
+              </q-item-section>
+            </q-item>
+            <q-item clickable v-ripple @click="auth.logout">
+              <q-item-section avatar>
+                <q-avatar color="secondary" icon="logout" />
+              </q-item-section>
+              <q-item-section>
+                Logout
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
       </q-toolbar>
     </q-header>
 
     <q-page-container>
-      <q-drawer
-        v-model="leftDrawerOpen"
-        show-if-above
-        bordered
-        class="main-drawer"
-      >
+      <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="main-drawer">
         <NavigationLinks :links="linkWithAuth" isVertical />
       </q-drawer>
       <main class="page-container">
@@ -64,14 +80,7 @@ function toggleLeftDrawer() {
 
 const linkWithAuth = computed(() => {
   let _links = [...links];
-  if (auth.isAuth)
-    _links.push({
-      title: 'Logout',
-      icon: 'logout',
-      routeName: RouteNames.Auth,
-      actions: auth.logout,
-    });
-  else
+  if (!auth.isAuth)
     _links.push({
       title: 'Login',
       icon: 'login',
@@ -85,5 +94,9 @@ const linkWithAuth = computed(() => {
 <style lang="scss" scoped>
 :deep(.main-drawer) {
   padding: 16px 8px 0px;
+}
+
+.user-dropdown {
+  margin-left: 8px;
 }
 </style>
