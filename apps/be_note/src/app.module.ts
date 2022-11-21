@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import jwt from './constants/jwt';
 import { AuthModule } from './modules/auth/auth.module';
+import { NoteModule } from './modules/note/note.module';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
@@ -26,6 +27,7 @@ import { UserModule } from './modules/user/user.module';
     }),
     AuthModule,
     UserModule,
+    NoteModule,
   ],
   controllers: [AppController],
   providers: [AppService],

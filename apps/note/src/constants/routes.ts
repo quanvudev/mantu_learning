@@ -4,6 +4,7 @@ enum RouteNames {
   Notes = 'Notes',
   Note = 'Note',
   OwnedNotes = 'Profile/Notes',
+  Profile = 'Profile',
   Auth = 'Auth',
 }
 

@@ -2,11 +2,22 @@
   <q-layout view="hHh Lpr lff">
     <q-header elevated>
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+        />
 
         <q-toolbar-title> Quasar App </q-toolbar-title>
         <NavigationLinks :links="linkWithAuth" />
-        <q-btn-dropdown v-if="auth.isAuth && auth.user" flat class="user-dropdown">
+        <q-btn-dropdown
+          v-if="auth.isAuth && auth.user"
+          flat
+          class="user-dropdown"
+        >
           <template #label>
             <q-avatar>
               {{ auth.user.name[0] }}
@@ -14,7 +25,11 @@
             {{ auth.user.name }}
           </template>
           <q-list>
-            <q-item clickable v-ripple>
+            <q-item
+              clickable
+              v-ripple
+              @click="$router.push({ name: RouteNames.OwnedNotes })"
+            >
               <q-item-section avatar>
                 <q-avatar color="secondary">
                   {{ auth.user.name[0] }}
@@ -28,9 +43,7 @@
               <q-item-section avatar>
                 <q-avatar color="secondary" icon="logout" />
               </q-item-section>
-              <q-item-section>
-                Logout
-              </q-item-section>
+              <q-item-section> Logout </q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>
@@ -38,7 +51,12 @@
     </q-header>
 
     <q-page-container>
-      <q-drawer v-model="leftDrawerOpen" show-if-above bordered class="main-drawer">
+      <q-drawer
+        v-model="leftDrawerOpen"
+        show-if-above
+        bordered
+        class="main-drawer"
+      >
         <NavigationLinks :links="linkWithAuth" isVertical />
       </q-drawer>
       <main class="page-container">
@@ -58,11 +76,11 @@ import { computed } from 'vue';
 import { useAuthStore } from '@/stores/auth-store';
 
 const links: NavigationLinkItem[] = [
-  {
-    title: 'Home',
-    icon: 'dashboard',
-    routeName: RouteNames.Home,
-  },
+  // {
+  //   title: 'Home',
+  //   icon: 'dashboard',
+  //   routeName: RouteNames.Home,
+  // },
   {
     title: 'Notes',
     icon: 'description',

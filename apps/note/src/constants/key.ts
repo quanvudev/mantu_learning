@@ -2,4 +2,8 @@ enum KEYS {
   APP_TOKEN = '@AUTH/TOKEN'
 }
 
-export { KEYS };
+enum ProvideKey {
+  NOTE_LIST = 'NOTE_LIST'
+}
+
+export { KEYS, ProvideKey };

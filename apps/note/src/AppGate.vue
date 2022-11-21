@@ -16,7 +16,7 @@ watch(
   (v) => {
     if (v)
       $q.loading.show({
-        message: 'Some important process  is in progress. Hang on...',
+        message: 'Some important process is in progress. Hang on...',
         backgroundColor: 'secondary',
       });
     else $q.loading.hide();

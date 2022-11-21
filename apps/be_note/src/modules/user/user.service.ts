@@ -1,8 +1,10 @@
 import { Injectable, Scope } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IPaginationOptions, paginate } from 'nestjs-typeorm-paginate';
 import { Repository } from 'typeorm';
 
 import { Auth } from '../auth/entities/auth.entity';
+import { Note } from '../note/entities/note.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
 
@@ -11,6 +13,8 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @InjectRepository(Note)
+    private notesRepository: Repository<Note>,
   ) {}
   async create(createUserDto: CreateUserDto, auth: Auth) {
     await this.usersRepository.insert(
@@ -28,10 +32,29 @@ export class UserService {
     });
   }
 
+  findById(id: number): Promise<User | undefined> {
+    return this.usersRepository.findOneBy({ id });
+  }
+
   async findOne(id: number) {
     return {
       status: true,
-      data: await this.usersRepository.findOne({ where: { id } }),
+      data: await this.findById(id),
     };
+  }
+
+  async findMyNote(id: number, options: IPaginationOptions) {
+    return paginate(this.notesRepository, options, {
+      where: {
+        user: {
+          id,
+        },
+      },
+      order: {
+        createdAt: {
+          direction: 'DESC',
+        },
+      },
+    });
   }
 }
