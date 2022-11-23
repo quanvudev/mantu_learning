@@ -17,7 +17,6 @@ const routes: RouteRecordRaw[] = [
         component: () => import('pages/AuthPage.vue'),
         name: RouteNames.Auth
       },
-
       {
         path: 'notes',
         component: () => import('pages/NotePage/index.vue'),
@@ -38,6 +37,11 @@ const routes: RouteRecordRaw[] = [
       }
     ],
     name: RouteNames.Profile
+  },
+  {
+    path: '/auth/callback',
+    component: () => import('pages/AuthCallback.vue'),
+    name: 'AuthCallbackPage'
   },
   {
     path: '/:catchAll(.*)*',

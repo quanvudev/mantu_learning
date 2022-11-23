@@ -1,6 +1,6 @@
 <template>
   <div
-    class="container"
+    class="navigation-container"
     :class="{
       vertical: $props.isVertical,
     }"
@@ -57,7 +57,7 @@ const navigate = (routeName: RouteNames) => {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.navigation-container {
   display: flex;
   flex-direction: row;
   gap: 4px;

@@ -20,6 +20,11 @@ declare namespace API {
     username: string;
     password: string;
   }
+  export interface Auth0Payload {
+    redirect_uri: string;
+    code: string;
+    provider: 'GOOGLE';
+  }
 
   export interface UserWithToken {
     accessToken: string;
@@ -56,6 +61,7 @@ declare namespace API {
   export interface AUTH {
     getUser: (token?: string) => Promise<WithSuccessData<User>>;
     login: (payload: LoginPayload) => Promise<UserWithToken>;
+    auth0: (payload: Auth0Payload) => Promise<UserWithToken>;
   }
 
   export interface NOTE {

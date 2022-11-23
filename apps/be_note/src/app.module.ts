@@ -16,7 +16,7 @@ import { UserModule } from './modules/user/user.module';
       host: 'containers-us-west-102.railway.app',
       port: 5499,
       username: 'postgres',
-      password: 'UMXEfzfO3VllQBC0KanO',
+      password: 'S9trmSpztzwxtVl6Wxwa',
       database: 'railway',
       autoLoadEntities: true,
       synchronize: true,

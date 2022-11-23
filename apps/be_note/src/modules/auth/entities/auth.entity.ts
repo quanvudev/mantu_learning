@@ -4,6 +4,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 
 export enum AuthProvider {
   DEFAULT = 'APP',
+  GOOGLE = 'GOOGLE',
 }
 
 @Entity('auths')
@@ -18,8 +19,8 @@ export class Auth extends BaseEntity {
   @Column()
   username: string;
 
-  @Column()
-  password: string;
+  @Column({ nullable: true })
+  password?: string;
 
   @OneToMany(() => User, (user) => user.auth)
   users: User[];

@@ -1,5 +1,6 @@
 import { AUTH } from '@/apis';
 import { KEYS } from '@/constants';
+import google from '@/constants/google';
 import { AxiosError } from 'axios';
 import { defineStore } from 'pinia';
 import { useQuasar } from 'quasar';
@@ -42,15 +43,28 @@ export const useAuthStore = defineStore('auth', () => {
     }
   );
 
+  function setAuthData(d: API.UserWithToken) {
+    localStorage.setItem(KEYS.APP_TOKEN, d.accessToken);
+    state.isAuth = true;
+    state.token = d.accessToken;
+    state.user = d.data;
+  }
   const { mutate, isLoading: isAuthenticating } = useMutation(
     ['POST_USER_WITH_TOKEN'],
     AUTH.login,
     {
       onSuccess: (d) => {
-        localStorage.setItem(KEYS.APP_TOKEN, d.accessToken);
-        state.isAuth = true;
-        state.token = d.accessToken;
-        state.user = d.data;
+        setAuthData(d);
+      }
+    }
+  );
+
+  const { mutate: attemptWithProvider, isLoading: isAttempting } = useMutation(
+    ['Auth0 with Provider'],
+    AUTH.auth0,
+    {
+      onSuccess: (d) => {
+        setAuthData(d);
       }
     }
   );
@@ -84,12 +98,40 @@ export const useAuthStore = defineStore('auth', () => {
     mutate(payload);
   }
 
+  function generateGoogleUri(from: string) {
+    const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
+
+    const options = {
+      redirect_uri: `${window.location.origin}/auth/callback`,
+      client_id: google.clientId,
+      access_type: 'offline',
+      response_type: 'code',
+      prompt: 'consent',
+      scope: [
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email'
+      ].join(' '),
+      state: from
+    };
+
+    const qs = new URLSearchParams(options);
+
+    return `${rootUrl}?${qs.toString()}`;
+  }
+
+  function loginWithGoogle(payload: API.Auth0Payload) {
+    attemptWithProvider(payload);
+  }
+
   return {
     ...toRefs(state),
     isLoading,
     isAuthenticating,
     bootstrap,
     logout,
-    login
+    login,
+    generateGoogleUri,
+    loginWithGoogle,
+    isAttempting
   };
 });

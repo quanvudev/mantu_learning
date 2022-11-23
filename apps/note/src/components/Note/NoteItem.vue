@@ -3,6 +3,14 @@
     class="note-item"
     :data-deleted="Boolean(data.deletedAt)"
     :id="`note-item-${data.id}`"
+    @click="
+      $router.push({
+        name: RouteNames.Note,
+        query: {
+          id: data.id,
+        },
+      })
+    "
   >
     <div class="note-item-header">
       <p class="note-item-id">#{{ data.id }}</p>
@@ -83,7 +91,7 @@
 
 <script lang="ts" setup>
 import { useNote } from '@/composables/useNote';
-import { ProvideKey } from '@/constants';
+import { ProvideKey, RouteNames } from '@/constants';
 import { generateColor } from '@/utils/generateColor';
 import { computed, inject, ref } from 'vue';
 
@@ -154,6 +162,7 @@ function onDelete() {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 
   &[data-deleted='true'] {
     background-color: #ff00000f;
@@ -196,15 +205,29 @@ function onDelete() {
 
   &-content,
   .q-editor {
+    overflow-x: hidden;
     :deep(code),
     :deep(pre) {
       background-color: #f4f4f4 !important;
       transition: all 0.15s cubic-bezier(0.165, 0.84, 0.44, 1);
       color: #476582;
+      white-space: pre-wrap;
+      white-space: -moz-pre-wrap;
+      white-space: -pre-wrap;
+      white-space: -o-pre-wrap;
+      word-wrap: break-word;
     }
 
     :deep(a) {
       font-weight: 600;
+    }
+
+    & * {
+      white-space: pre-wrap;
+      white-space: -moz-pre-wrap;
+      white-space: -pre-wrap;
+      white-space: -o-pre-wrap;
+      word-wrap: break-word;
     }
   }
 

@@ -11,8 +11,7 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
-        <NavigationLinks :links="linkWithAuth" />
+        <q-toolbar-title> Note </q-toolbar-title>
         <q-btn-dropdown
           v-if="auth.isAuth && auth.user"
           flat
@@ -47,6 +46,14 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
+        <q-btn
+          flat
+          icon-right="login"
+          v-else
+          @click="$router.push({ name: RouteNames.Auth })"
+        >
+          Login
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -64,6 +71,14 @@
       </main>
     </q-page-container>
   </q-layout>
+  <Teleport to="#app-sticky-modal" v-if="shoudShowTeleport">
+    <p class="text-subtitle text-bold">
+      {{ $t('unauthorized') }}
+      <RouterLink :to="{ name: RouteNames.Auth }">{{
+        $t('clickToLogin')
+      }}</RouterLink>
+    </p>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -74,6 +89,9 @@ import NavigationLinks, {
 import { RouteNames } from '@/constants';
 import { computed } from 'vue';
 import { useAuthStore } from '@/stores/auth-store';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 const links: NavigationLinkItem[] = [
   // {
@@ -95,6 +113,10 @@ const auth = useAuthStore();
 function toggleLeftDrawer() {
   leftDrawerOpen.value = !leftDrawerOpen.value;
 }
+
+const shoudShowTeleport = computed(
+  () => !Boolean(auth.user) && route.name !== RouteNames.Auth
+);
 
 const linkWithAuth = computed(() => {
   let _links = [...links];

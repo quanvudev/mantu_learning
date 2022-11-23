@@ -4,6 +4,9 @@
 export default {
   failed: 'Action failed',
   success: 'Action was successful',
+  unauthorized: "You aren't logged in, Login to ediable your note.",
+  clickToLogin: 'Click here to login.',
+  authenticating: 'User authentication in progress, Please wait a moment...',
   note: {
     create: {
       placeholder: 'Enter your note.',

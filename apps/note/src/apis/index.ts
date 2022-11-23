@@ -18,6 +18,11 @@ const AUTH: API.AUTH = {
   },
   login: (payload: API.LoginPayload) => {
     return api.post<API.UserWithToken>('/auth', payload).then((r) => r.data);
+  },
+  auth0: (payload) => {
+    return api
+      .post<API.UserWithToken>('/auth/auth0', payload)
+      .then((r) => r.data);
   }
 };
 
