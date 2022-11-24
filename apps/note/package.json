@@ -8,14 +8,25 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "format": "prettier --write \"**/*.{js,ts,vue,,html,md,json}\" --ignore-path .gitignore",
-    "test": "echo \"No test specified\" && exit 0",
+    "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
     "dev": "quasar d",
     "build": "quasar b",
-    "clean": "quasar c"
+    "clean": "quasar c",
+    "test:unit": "jest --updateSnapshot",
+    "test:unit:ci": "jest --ci",
+    "test:unit:coverage": "jest --coverage",
+    "test:unit:watch": "jest --watch",
+    "test:unit:watchAll": "jest --watchAll",
+    "test:e2e": "cross-env NODE_ENV=test start-test \"quasar dev\" http-get://localhost:8080 \"cypress open --e2e\"",
+    "test:e2e:ci": "cross-env NODE_ENV=test start-test \"quasar dev\" http-get://localhost:8080 \"cypress run --e2e\"",
+    "test:component": "cross-env NODE_ENV=test cypress open --component",
+    "test:component:ci": "cross-env NODE_ENV=test cypress run --component"
   },
   "dependencies": {
+    "@pinia/testing": "^0.0.14",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
+    "axios-mock-adapter": "^1.21.2",
     "core-js": "^3.6.5",
     "dayjs": "^1.11.6",
     "lodash": "^4.17.21",
@@ -27,15 +38,24 @@
     "vue-router": "^4.0.0"
   },
   "devDependencies": {
+    "@pinia/testing": "^0.0.14",
     "@quasar/app-webpack": "^3.0.0",
+    "@quasar/quasar-app-extension-testing-e2e-cypress": "^5.0.0-beta.7",
+    "@quasar/quasar-app-extension-testing-unit-jest": "^3.0.0-beta.5",
     "@types/lodash": "^4.14.188",
     "@types/node": "^12.20.21",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
+    "@vue/test-utils": "^2.2.0",
     "eslint": "^8.10.0",
     "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-jest": "^27.1.3",
     "eslint-plugin-vue": "^9.0.0",
-    "prettier": "^2.5.1"
+    "jest": "^29.2.2",
+    "jest-localstorage-mock": "^2.4.22",
+    "prettier": "^2.5.1",
+    "cypress": "^10.10.0",
+    "eslint-plugin-cypress": "^2.12.1"
   },
   "browserslist": [
     "last 10 Chrome versions",

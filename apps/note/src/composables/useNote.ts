@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue';
 import { dateFormat } from '@/utils/dateFormater';
 import { useAuthStore } from '@/stores/auth-store';
-import { NOTE } from '@/apis';
+import { NoteService } from '@/services';
 import { useMutation } from 'vue-query';
 import { useQuasar } from 'quasar';
 
@@ -15,7 +15,7 @@ export function useNote(note: API.Note) {
   const { mutate: excuteUpdateNote, isLoading: isUpdating } = useMutation(
     ['Update Note', note.id],
     (value: string) => {
-      return NOTE.updateNote(noteRef.value.id, value);
+      return NoteService.updateNote(noteRef.value.id, value);
     },
     {
       onSuccess: (d) => {
@@ -34,7 +34,7 @@ export function useNote(note: API.Note) {
   const { mutate: excuteDeleteNote, isLoading: isDeleting } = useMutation(
     ['Delete Note', note.id],
     (hard: boolean) => {
-      return NOTE.deleteNote(noteRef.value.id, hard);
+      return NoteService.deleteNote(noteRef.value.id, hard);
     },
     {
       onSuccess: (d) => {
@@ -52,7 +52,7 @@ export function useNote(note: API.Note) {
   const { mutate: excuteRecoverNote, isLoading: isRecovering } = useMutation(
     ['Recover Note', note.id],
     () => {
-      return NOTE.recoverNote(noteRef.value.id);
+      return NoteService.recoverNote(noteRef.value.id);
     },
     {
       onSuccess: (d) => {

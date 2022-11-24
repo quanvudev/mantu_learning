@@ -1,0 +1,33 @@
+{
+  "items": [
+      {
+          "id": 2,
+          "createdAt": "2022-11-24T01:11:03.825Z",
+          "updatedAt": "2022-11-24T01:11:03.825Z",
+          "content": "this is the new note",
+          "deletedAt": null,
+          "user": null
+      },
+      {
+          "id": 1,
+          "createdAt": "2022-11-24T01:10:00.552Z",
+          "updatedAt": "2022-11-24T01:10:00.552Z",
+          "content": "this is the new note",
+          "deletedAt": null,
+          "user": null
+      }
+  ],
+  "meta": {
+      "totalItems": 28,
+      "itemCount": 2,
+      "itemsPerPage": 2,
+      "totalPages": 14,
+      "currentPage": 1
+  },
+  "links": {
+      "first": "",
+      "previous": "",
+      "next": "",
+      "last": ""
+  }
+}

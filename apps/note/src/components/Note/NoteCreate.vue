@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts" setup>
-import { NOTE } from '@/apis';
+import { NoteService } from '@/services';
 import { useAuthStore } from '@/stores/auth-store';
 import { useQuasar } from 'quasar';
 import { ref } from 'vue';
@@ -45,7 +45,7 @@ const form = ref<string>('');
 
 const authStore = useAuthStore();
 
-const { mutate, isLoading } = useMutation('NoteCreation', NOTE.createNote, {
+const { mutate, isLoading } = useMutation('NoteCreation', NoteService.createNote, {
   onSuccess: (d) => {
     form.value = '';
     emits('created', d);

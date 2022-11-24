@@ -9,7 +9,7 @@
 import NoteCreate from '@/components/Note/NoteCreate.vue';
 import NoteList from '@/components/Note/NoteList.vue';
 
-import { NOTE } from '@/apis';
+import { NoteService } from '@/services';
 import { useInfiniteQuery } from 'vue-query';
 import last from 'lodash/last';
 import { onUnmounted, provide, ref } from 'vue';
@@ -22,7 +22,7 @@ const { fetchNextPage, data, isFetchingNextPage, remove, refetch } =
   useInfiniteQuery(
     'NoteListPage',
     ({ pageParam }) => {
-      return NOTE.getNotes(2, pageParam);
+      return NoteService.getNotes(2, pageParam);
     },
     {
       onSuccess: (d) => {

@@ -1,0 +1,14 @@
+{
+  "@quasar/testing-unit-jest": {
+    "options": [
+      "scripts",
+      "typescript"
+    ]
+  },
+  "@quasar/testing-e2e-cypress": {
+    "options": [
+      "scripts",
+      "typescript"
+    ]
+  }
+}

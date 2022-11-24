@@ -6,6 +6,9 @@
       autocomplete="off"
       autocorrect="off"
     >
+      <p class="form-message text-negative" v-if="auth.loginMessage">
+        {{ auth.loginMessage?.response?.data.message }}: {{form.username}}
+      </p>
       <q-input
         ref="usernameRef"
         v-model="form.username"

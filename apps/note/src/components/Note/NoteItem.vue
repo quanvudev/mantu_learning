@@ -3,6 +3,7 @@
     class="note-item"
     :data-deleted="Boolean(data.deletedAt)"
     :id="`note-item-${data.id}`"
+    :data-editing="isEditing"
     @click="
       $router.push({
         name: RouteNames.Note,
@@ -24,6 +25,7 @@
           round
           size="sm"
           :loading="isUpdating"
+          id="note-item-edit-btn"
         >
           <q-tooltip v-if="isEditing">
             {{ $t('note.edit.done') }}
@@ -42,17 +44,19 @@
           @click="onDelete()"
           size="sm"
           :loading="isDeleting"
+          id="note-item-delete-btn"
         />
 
         <q-btn
           icon="restore"
-          v-if="Boolean(data.deletedAt)"
+          v-if="data.editable && Boolean(data.deletedAt)"
           color="positive"
           flat
           round
           size="sm"
           @click="onRecover()"
           :loading="isRecovering"
+          id="note-item-recover-btn"
         />
       </div>
     </div>
@@ -65,7 +69,7 @@
           {{ data.user.name[0] }}
         </q-avatar>
       </q-item-section>
-      <q-item-section side>
+      <q-item-section side class="data-author-name">
         <q-item-label class="name">
           {{ data.user.name }}
           <span>
@@ -163,6 +167,10 @@ function onDelete() {
   display: flex;
   flex-direction: column;
   cursor: pointer;
+
+  &[data-editing] {
+    cursor: auto;
+  }
 
   &[data-deleted='true'] {
     background-color: #ff00000f;

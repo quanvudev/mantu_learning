@@ -8,18 +8,18 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: '',
-        component: () => import('pages/IndexPage.vue'),
+        component: () => import('@/pages/IndexPage.vue'),
         name: RouteNames.Home
       },
 
       {
         path: 'auth',
-        component: () => import('pages/AuthPage.vue'),
+        component: () => import('@/pages/AuthPage.vue'),
         name: RouteNames.Auth
       },
       {
         path: 'notes',
-        component: () => import('pages/NotePage/index.vue'),
+        component: () => import('@/pages/NotePage.vue'),
         name: RouteNames.Notes
       }
     ],
@@ -32,7 +32,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         path: 'notes',
-        component: () => import('pages/MyNotePage/index.vue'),
+        component: () => import('@/pages/MyNotePage.vue'),
         name: RouteNames.OwnedNotes
       }
     ],
@@ -40,12 +40,12 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/auth/callback',
-    component: () => import('pages/AuthCallback.vue'),
+    component: () => import('@/pages/AuthCallback.vue'),
     name: 'AuthCallbackPage'
   },
   {
     path: '/:catchAll(.*)*',
-    component: () => import('pages/ErrorNotFound.vue'),
+    component: () => import('@/pages/ErrorNotFound.vue'),
     name: 'NotFoundPage'
   }
 ];

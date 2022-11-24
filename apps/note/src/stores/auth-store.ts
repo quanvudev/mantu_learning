@@ -1,11 +1,9 @@
-import { AUTH } from '@/apis';
+import { AuthService } from '@/services';
 import { KEYS } from '@/constants';
 import google from '@/constants/google';
 import { AxiosError } from 'axios';
 import { defineStore } from 'pinia';
-import { useQuasar } from 'quasar';
-import { reactive, toRefs } from 'vue';
-import { useQuery, useMutation } from 'vue-query';
+import { reactive, toRefs, ref } from 'vue';
 
 export interface State {
   isAuth: boolean;
@@ -13,92 +11,93 @@ export interface State {
     id: number;
     name: string;
   };
-  token?: string;
+  token: string | null;
 }
 
-const initialState = { isAuth: false, user: null };
+const initialState = { isAuth: false, user: null, token: null };
 
 export const useAuthStore = defineStore('auth', () => {
-  const $q = useQuasar();
   const state = reactive<State>(initialState);
 
-  const { isLoading, refetch } = useQuery(
-    ['GET_USER_WITH_TOKEN', state.token],
-    (q) => AUTH.getUser(q.queryKey[1]),
-    {
-      enabled: Boolean(state.token),
-      refetchOnMount: false,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: false,
-      onSuccess: (d) => {
-        state.user = d.data;
-        state.isAuth = Boolean(d.data);
-      },
-      onError: (err: AxiosError) => {
+  const isLoading = ref<boolean>(false);
+  const isAuthenticating = ref<boolean>(false);
+  const isAttempting = ref<boolean>(false);
+  const loginMessage = ref<AxiosError>();
+
+  async function fetchUser(token?: string) {
+    const t = token ?? state.token;
+    if (!t) return;
+    isLoading.value = true;
+    await AuthService.getUser(t)
+      .then((d) => {
+        setAuthData({
+          data: d.data,
+          accessToken: t
+        });
+      })
+      .catch((err: AxiosError) => {
         if (err.response?.status === 401) {
           refreshState();
         }
-      },
-      retry: false
-    }
-  );
+      })
+      .finally(() => {
+        isLoading.value = false;
+      });
+  }
+
+  async function login(data: API.LoginPayload) {
+    isAuthenticating.value = true;
+    loginMessage.value = undefined;
+    await AuthService.login(data)
+      .then((d) => {
+        setAuthData(d);
+        loginMessage.value = undefined;
+      })
+      .catch((err) => {
+        loginMessage.value = err;
+        refreshState();
+      })
+      .finally(() => {
+        isAuthenticating.value = false;
+      });
+  }
+
+  async function attemptWithProvider(data: API.Auth0Payload) {
+    isAttempting.value = true;
+    await AuthService.auth0(data)
+      .then((d) => {
+        setAuthData(d);
+      })
+      .catch(() => {
+        refreshState();
+      })
+      .finally(() => {
+        isAttempting.value = false;
+      });
+  }
 
   function setAuthData(d: API.UserWithToken) {
-    localStorage.setItem(KEYS.APP_TOKEN, d.accessToken);
     state.isAuth = true;
     state.token = d.accessToken;
     state.user = d.data;
+    localStorage.setItem(KEYS.APP_TOKEN, d.accessToken);
   }
-  const { mutate, isLoading: isAuthenticating } = useMutation(
-    ['POST_USER_WITH_TOKEN'],
-    AUTH.login,
-    {
-      onSuccess: (d) => {
-        setAuthData(d);
-      }
-    }
-  );
 
-  const { mutate: attemptWithProvider, isLoading: isAttempting } = useMutation(
-    ['Auth0 with Provider'],
-    AUTH.auth0,
-    {
-      onSuccess: (d) => {
-        setAuthData(d);
-      }
-    }
-  );
-
-  function bootstrap() {
+  async function bootstrap() {
     const storedData = localStorage.getItem(KEYS.APP_TOKEN);
     if (!storedData) return;
     state.token = storedData;
-    refetch.value();
+    await fetchUser(storedData);
   }
 
   function refreshState() {
     state.isAuth = false;
     state.user = null;
-    state.token = undefined;
+    state.token = null;
     localStorage.clear();
   }
 
-  function logout() {
-    $q.dialog({
-      title: 'Alert',
-      message: 'Are you sure to logout?',
-      ok: {
-        color: 'primary'
-      },
-      cancel: true
-    }).onOk(refreshState);
-  }
-
-  function login(payload: API.LoginPayload) {
-    mutate(payload);
-  }
-
-  function generateGoogleUri(from: string) {
+  function generateGoogleUri(redirect: string) {
     const rootUrl = 'https://accounts.google.com/o/oauth2/v2/auth';
 
     const options = {
@@ -111,7 +110,7 @@ export const useAuthStore = defineStore('auth', () => {
         'https://www.googleapis.com/auth/userinfo.profile',
         'https://www.googleapis.com/auth/userinfo.email'
       ].join(' '),
-      state: from
+      state: redirect
     };
 
     const qs = new URLSearchParams(options);
@@ -119,19 +118,16 @@ export const useAuthStore = defineStore('auth', () => {
     return `${rootUrl}?${qs.toString()}`;
   }
 
-  function loginWithGoogle(payload: API.Auth0Payload) {
-    attemptWithProvider(payload);
-  }
-
   return {
     ...toRefs(state),
     isLoading,
     isAuthenticating,
     bootstrap,
-    logout,
+    logout: refreshState,
     login,
     generateGoogleUri,
-    loginWithGoogle,
-    isAttempting
+    loginWithGoogle: attemptWithProvider,
+    isAttempting,
+    loginMessage
   };
 });

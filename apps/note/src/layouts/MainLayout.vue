@@ -38,7 +38,7 @@
                 {{ auth.user?.name }}
               </q-item-section>
             </q-item>
-            <q-item clickable v-ripple @click="auth.logout">
+            <q-item clickable v-ripple @click="onLogout()">
               <q-item-section avatar>
                 <q-avatar color="secondary" icon="logout" />
               </q-item-section>
@@ -90,8 +90,11 @@ import { RouteNames } from '@/constants';
 import { computed } from 'vue';
 import { useAuthStore } from '@/stores/auth-store';
 import { useRoute } from 'vue-router';
+import { useQuasar } from 'quasar';
 
 const route = useRoute();
+
+const $q = useQuasar();
 
 const links: NavigationLinkItem[] = [
   // {
@@ -129,6 +132,17 @@ const linkWithAuth = computed(() => {
 
   return _links;
 });
+
+function onLogout() {
+  $q.dialog({
+    title: 'Alert',
+    message: 'Are you sure to logout?',
+    ok: {
+      color: 'primary',
+    },
+    cancel: true,
+  }).onOk(auth.logout);
+}
 </script>
 
 <style lang="scss" scoped>
