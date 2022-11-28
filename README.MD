@@ -29,3 +29,10 @@
 ```
 
 - Once the dependencies are installed, you can run ```yarn dev``` or ```npm run dev```
+
+- Default account login
+
+```bash
+  username: iamroot
+  password: iamroot
+```
