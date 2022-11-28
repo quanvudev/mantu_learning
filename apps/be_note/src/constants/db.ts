@@ -6,4 +6,12 @@ const postgres = {
   database: 'mantu_note',
 };
 
-export default postgres;
+const postgresProd = {
+  host: 'containers-us-west-102.railway.app',
+  port: 5499,
+  password: 'S9trmSpztzwxtVl6Wxwa',
+  username: 'postgres',
+  database: 'railway',
+};
+
+export default process.env.NODE_ENV === 'development' ? postgres : postgresProd;
