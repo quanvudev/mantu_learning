@@ -1,4 +1,4 @@
-# Mantu Template (mantu-template)
+# Trainning: Note
 
 Mantu Project
 

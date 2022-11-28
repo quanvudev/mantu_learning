@@ -3,7 +3,7 @@ const postgres = {
   port: 5432,
   username: 'postgres',
   password: 'postgres',
-  database: 'mantu_note',
+  database: 'note',
 };
 
 const postgresProd = {

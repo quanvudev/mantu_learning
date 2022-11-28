@@ -1,4 +1,4 @@
-# Mantu Trainning: Note
+# Trainning: Note
 
 ## 📖 Requirements
 
@@ -10,9 +10,9 @@
 
 - Clone this repository
 
-- Ensure that PostgresDB has been installed or follow up [this url](https://hevodata.com/learn/docker-postgresql) to install PostgresDB via Docker then create a new database `mantu_note`
+- Ensure that PostgresDB has been installed or follow up [this url](https://hevodata.com/learn/docker-postgresql) to install PostgresDB via Docker then create a new database `note`
 
-- Use [DBeaver](https://dbeaver.io/) to execute the script `db/execute.sql` to database `mantu_note`
+- Use [DBeaver](https://dbeaver.io/) to execute the script `db/execute.sql` to database `note`
 
 - Install dependencies ```yarn install``` or ```npm install```
 
@@ -24,7 +24,7 @@
     port: 5432,
     username: 'postgres',
     password: 'postgres',
-    database: 'mantu_note',
+    database: 'note',
   };
 ```
 

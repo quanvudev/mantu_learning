@@ -81,6 +81,7 @@ module.exports = configure(function (ctx) {
           '@': path.resolve(__dirname, './src'),
         };
       },
+      env: require('dotenv').config().parsed
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
@@ -145,8 +146,8 @@ module.exports = configure(function (ctx) {
       // chainWebpackCustomSW (/* chain */) {},
 
       manifest: {
-        name: 'Mantu Template',
-        short_name: 'Mantu Template',
+        name: 'note Template',
+        short_name: 'note Template',
         description: '',
         display: 'standalone',
         orientation: 'portrait',
@@ -210,7 +211,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'mantu-template',
+        appId: 'note-template',
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

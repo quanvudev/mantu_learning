@@ -8,13 +8,15 @@ declare module '@vue/runtime-core' {
   }
 }
 
+const API_PATH = process.env.API_PATH
+
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
 // If any client changes this (global) instance, it might be a
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-const api = axios.create({ baseURL: `${process.env.DEV ? 'http://localhost:3000': 'https://mantulearning-production.up.railway.app'}/api` });
+const api = axios.create({ baseURL: `${API_PATH}/api` });
 
 api.interceptors.request.use((c) => {
   let headers = { ...c.headers };
