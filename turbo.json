@@ -6,9 +6,9 @@
       "outputs": [".next/**"]
     },
     "test": {
-      "dependsOn": ["build"],
+      "dependsOn": [],
       "outputs": [],
-      "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
+      "inputs": []
     },
     "lint": {
       "outputs": []
